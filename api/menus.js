@@ -52,6 +52,7 @@ menusRouter.post('/', (req, res, next) => {
     if (error) {
       next(error);
     } else {
+      //menuId = this.lastID;
       db.get(`SELECT * FROM Menu WHERE Menu.id = ${this.lastID}`,
         (error, menu) => {
           res.status(201).json({menu: menu});
@@ -61,7 +62,7 @@ menusRouter.post('/', (req, res, next) => {
 });
 
 menusRouter.put('/:menuId', (req, res, next) => {
-  const title = req.body.menu.title
+  const title = req.body.menu.title;
   if (!title) {
     return res.sendStatus(400);
   }

@@ -36,17 +36,17 @@ menuItemsRouter.post('/', (req, res, next) => {
         inventory = req.body.menuItem.inventory,
         price = req.body.menuItem.price,
         menuId = req.body.menuItem.menuId;
- const menuItemSql = 'SELECT * FROM MenuItem WHERE MenuItem.menu_id = $menuId';
+ const menuItemSql = 'SELECT * FROM Menu WHERE Menu.id = $menuId';
   const menuItemValues = {$menuId: menuId};
   db.get(menuItemSql, menuItemValues, (error, menuItem) => {
     if (error) {
       next(error);
     } else {
-      if (!name || !inventory || !price || !menuId) {
+      if (!name || !inventory || !price || !menuItem) {
         return res.sendStatus(400);
       }
 
-      const sql = 'INSERT INTO MenuItem (name, description, inventory, price, menu_id)' +
+      const sql = 'INSERT INTO MenuItem (name, description, inventory, price, menu_id) ' +
           'VALUES ($name, $description, $inventory, $price, $menuId)';
       const values = {
         $name: name,
@@ -58,6 +58,7 @@ menuItemsRouter.post('/', (req, res, next) => {
 
       db.run(sql, values, function(error) {
         if (error) {
+          console.log(error);
           next(error);
         } else {
           db.get(`SELECT * FROM MenuItem WHERE MenuItem.id = ${this.lastID}`,
@@ -75,20 +76,19 @@ menuItemsRouter.put('/:menuItemId', (req, res, next) => {
         description = req.body.menuItem.description,
         inventory = req.body.menuItem.inventory,
         price = req.body.menuItem.price,
-        menuId = req.body.menuItem.menuId
-        ;
-  const menuItemSql = 'SELECT * FROM MenuItem WHERE MenuItem.menu_id = $menuId';
+        menuId = req.body.menuItem.menuId;
+  const menuItemSql = 'SELECT * FROM Menu WHERE Menu.id = $menuId';
   const menuItemValues = {$menuId: menuId};
   db.get( menuItemSql, menuItemValues, (error, menuItem) => {
     if (error) {
       next(error);
     } else {
-      if (!name || !inventory || !price || !menuId) {
+      if (!name || !inventory || !price || !menuItem) {
         return res.sendStatus(400);
       }
 
       const sql = 'UPDATE MenuItem SET name = $name, description = $description, ' +
-          'inventory = $inventory, price = $price' +
+          'inventory = $inventory, price = $price, menu_id = $menuId ' +
           'WHERE MenuItem.id = $menuItemId';
       const values = {
         $name: name,
@@ -100,6 +100,7 @@ menuItemsRouter.put('/:menuItemId', (req, res, next) => {
 
       db.run(sql, values, function(error) {
         if (error) {
+          console.log(error);
           next(error);
         } else {
           db.get(`SELECT * FROM MenuItem WHERE MenuItem.id = ${req.params.menuItemId}`,

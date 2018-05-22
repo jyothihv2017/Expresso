@@ -47,7 +47,7 @@ employeesRouter.post('/', (req, res, next) => {
     return res.sendStatus(400);
   }
 
-  const sql = 'INSERT INTO Employee (name, position, wage, is_current_employee)' +
+  const sql = 'INSERT INTO Employee (name, position, wage, is_current_employee) ' +
       'VALUES ($name, $position, $wage, $isCurrentEmployee)';
   const values = {
     $name: name,
@@ -60,6 +60,7 @@ employeesRouter.post('/', (req, res, next) => {
     if (error) {
       next(error);
     } else {
+    //  employeeId = this.lastID;
       db.get(`SELECT * FROM Employee WHERE Employee.id = ${this.lastID}`,
         (error, employee) => {
           res.status(201).json({employee: employee});
@@ -79,7 +80,7 @@ employeesRouter.put('/:employeeId', (req, res, next) => {
 
   const sql = 'UPDATE Employee SET name = $name, position = $position, ' +
       'wage = $wage, is_current_employee = $isCurrentEmployee ' +
-      'WHERE Employee.id = $employeeId';
+      'WHERE Employee.id = $employeeId ';
   const values = {
     $name: name,
     $position: position,

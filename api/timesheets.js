@@ -45,7 +45,7 @@ timesheetsRouter.post('/', (req, res, next) => {
         return res.sendStatus(400);
       }
 
-      const sql = 'INSERT INTO Timesheet (hours, rate, date, employee_id)' +
+      const sql = 'INSERT INTO Timesheet (hours, rate, date, employee_id) ' +
           'VALUES ($hours, $rate, $date, $employeeId )';
       const values = {
         $hours: hours,
@@ -85,7 +85,7 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
 
       const sql = 'UPDATE Timesheet SET hours = $hours, rate = $rate, ' +
           'date = $date, ' +
-          'employee_id = $employeeId, ' +
+          'employee_id = $employeeId ' +
           'WHERE Timesheet.id = $timesheetId';
       const values = {
         $hours: hours,
